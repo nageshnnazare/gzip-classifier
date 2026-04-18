@@ -1,6 +1,6 @@
 #include "knn.hpp"
 
 int main() {
-    print_hello("Developer");
+    Knn knn;
     return 0;
 }

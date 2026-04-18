@@ -1,6 +1,9 @@
 #include "knn.hpp"
-#include <iostream>
 
-void print_hello(const std::string& name) {
-    std::cout << "Hello, " << name << "! Welcome to your C++ project." << std::endl;
+Knn::Knn() : _parser("datasets/ag_news/test.csv") {
+    _parser.parseData();
+    _data = &_parser.getData();
+    _parser.printData(10);
 }
+
+Knn::~Knn() {}

@@ -1,8 +1,20 @@
-#ifndef HELLO_HPP
-#define HELLO_HPP
+#ifndef KNN_HPP
+#define KNN_HPP
 
+#include "parser.hpp"
+#include <vector>
 #include <string>
+#include <string_view>
 
-void print_hello(const std::string& name);
+class Knn {
 
-#endif
+public:
+    Knn();
+    ~Knn();
+
+private:
+    CsvParser _parser;
+    const std::vector<std::vector<std::string_view>>* _data;
+};
+
+#endif // KNN_HPP
