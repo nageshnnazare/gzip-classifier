@@ -17,6 +17,13 @@
  * those lengths efficiently.  Under the hood it keeps reusable @c z_stream
  * objects so repeated calls avoid repeated allocator setup in zlib.
  *
+ * @note Gzip adds a fixed-format overhead (header, block metadata, CRC32;
+ *       typically ~20 bytes).  Compressing strings shorter than that will
+ *       yield @c C(s) > |s| even though compression succeeded.  NCD uses
+ *       relative sizes, so this expansion on tiny strings does not break the
+ *       distance measure — but callers should compress full document text,
+ *       not individual short tokens or column headers.
+ *
  * @see Jiang et al., "Low-Resource Text Classification with Ultralightweight
  *      Models" (2022)
  */

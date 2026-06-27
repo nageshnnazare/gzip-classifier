@@ -20,7 +20,7 @@
 #include <knn.hpp>
 
 int main() {
-  Knn knn{"datasets/ag_news/test.csv", true};
+  Knn knn{"datasets/ag_news/train.csv", true};
   knn.analyzeDataTest();
   knn.compressDecompressDataTest();
 

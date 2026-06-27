@@ -15,9 +15,56 @@
 
 #include <cctype>
 #include <iostream>
+#include <optional>
+#include <string>
 #include <unordered_map>
 
 #include <knn.hpp>
+
+namespace {
+
+/** @return Parsed class id, or @c std::nullopt for headers / bad labels. */
+std::optional<int> parseClassLabel(std::string_view label) {
+  if (label.empty()) {
+    return std::nullopt;
+  }
+  if (label.front() == '"') {
+    label.remove_prefix(1);
+  }
+  if (!label.empty() && label.back() == '"') {
+    label.remove_suffix(1);
+  }
+  if (label.empty() ||
+      !std::isdigit(static_cast<unsigned char>(label.front()))) {
+    return std::nullopt;
+  }
+  return std::stoi(std::string{label});
+}
+
+/** @return @c true when @p label is a numeric class id (skips CSV headers). */
+bool isNumericLabel(std::string_view label) {
+  return parseClassLabel(label).has_value();
+}
+
+/**
+ * @brief Join non-label text columns into one document string.
+ *
+ * NCD is meaningful on full documents; compressing a single short field
+ * (or the header row) will almost always produce a *larger* gzip payload
+ * because of format overhead.
+ */
+std::string joinRowText(const CsvParser::CsvRow &row) {
+  std::string text;
+  for (std::size_t col = 1; col < row.size(); ++col) {
+    if (col > 1) {
+      text.push_back(' ');
+    }
+    text.append(row[col]);
+  }
+  return text;
+}
+
+} // namespace
 
 Knn::Knn(const std::string &train, bool debug) : _train{train}, _debug{debug} {
   CsvParser csv{train};
@@ -35,24 +82,11 @@ void Knn::analyzeDataTest() {
   std::unordered_map<int, int> classes{};
 
   for (const auto &row : _data) {
-    if (row.empty()) {
+    if (row.empty() || !isNumericLabel(row.at(0))) {
       continue;
     }
 
-    std::string label{row.at(0)};
-    if (!label.empty() && label.front() == '"') {
-      label.erase(0, 1);
-    }
-    if (!label.empty() && label.back() == '"') {
-      label.pop_back();
-    }
-
-    if (label.empty() ||
-        !std::isdigit(static_cast<unsigned char>(label.front()))) {
-      continue;
-    }
-
-    const int classIndex = std::stoi(label);
+    const int classIndex = *parseClassLabel(row.at(0));
     classes[classIndex]++;
   }
 
@@ -68,17 +102,24 @@ void Knn::compressDecompressDataTest() {
   int count = 0;
 
   std::cout << " ======== Compress / Decompress ======= \n";
+
   for (const auto &row : _data) {
-    if (count >= kMaxRows || row.size() < 2) {
+    if (count >= kMaxRows || row.size() < 2 || !isNumericLabel(row.at(0))) {
       continue;
     }
 
-    const std::string text{row.at(1)};
+    const std::string text = joinRowText(row);
     const auto compressed = _compressor.compressString(text);
     const std::string restored = _compressor.decompressString(compressed);
 
+    const double ratio =
+        text.empty() ? 0.0
+                     : static_cast<double>(text.size() - compressed.size()) /
+                           text.size();
+
     std::cout << " Row " << count << " original=" << text.size()
-              << " compressed=" << compressed.size() << " ok=" << std::boolalpha
+              << " compressed=" << compressed.size()
+              << " saving=" << ratio * 100 << "% ok=" << std::boolalpha
               << (restored == text) << "\n";
     count++;
   }
