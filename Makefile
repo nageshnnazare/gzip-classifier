@@ -4,7 +4,7 @@
 # Compiler and Flags
 CXX      := g++
 CXXFLAGS := -Wall -Wextra -Wpedantic -std=c++17 -Iinclude -O3
-LDFLAGS  := 
+LDFLAGS  := -lz
 
 # Directories
 SRC_DIR   := src
@@ -27,17 +27,18 @@ HEADERS := $(wildcard $(INC_DIR)/*.hpp)
 all: format $(TARGET)
 
 format: ${SOURCES} ${HEADERS}
+	@echo "Formatting $@..."
 	$(FORMAT) $(HEADERS) $(SOURCES)
 
 # Link the executable
 $(TARGET): $(OBJECTS) | $(BIN_DIR)
-	@echo "Linking $@"
-	@$(CXX) $(OBJECTS) -o $(TARGET) $(LDFLAGS)
+	@echo "Linking $@..."
+	$(CXX) $(OBJECTS) -o $(TARGET) $(LDFLAGS)
 
 # Compile source files into object files
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp | $(BUILD_DIR)
-	@echo "Compiling $<"
-	@$(CXX) $(CXXFLAGS) -c $< -o $@
+	@echo "Compiling $<..."
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # Create directories if they don't exist
 $(BIN_DIR) $(BUILD_DIR):
@@ -51,6 +52,6 @@ clean:
 # Run the executable
 run: all
 	@echo "Running $(TARGET)..."
-	@$(TARGET)
+	$(TARGET)
 
 .PHONY: all clean run
