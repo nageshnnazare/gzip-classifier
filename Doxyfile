@@ -1,0 +1,29 @@
+# Doxyfile for Gzip Classifier
+
+# Project Metadata
+PROJECT_NAME           = "Gzip Classifier"
+PROJECT_NUMBER         = "0.1.0"
+PROJECT_BRIEF          = "knn based text classification using zlib"
+
+# Input Configuration
+INPUT                  = src include
+RECURSIVE              = YES
+FILE_PATTERNS          = *.cpp *.hpp *.md
+
+# Output Configuration
+OUTPUT_DIRECTORY       = docs/doxygen
+GENERATE_HTML          = YES
+HTML_OUTPUT            = html
+GENERATE_LATEX         = NO
+
+# Extraction Settings
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
+
+# UI Styling and Features
+HTML_COLORSTYLE_HUE    = 220
+HTML_COLORSTYLE_SAT    = 100
+HTML_COLORSTYLE_LIGHT  = 90
+GENERATE_TREEVIEW      = YES
+SOURCE_BROWSER         = YES
