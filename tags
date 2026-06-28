@@ -1,0 +1,59 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+BIN_DIR	Makefile	/^BIN_DIR   := build\/bin$/;"	m
+BUILD_DIR	Makefile	/^BUILD_DIR := build$/;"	m
+COMPRESSOR_HPP	include/compressor.hpp	/^#define COMPRESSOR_HPP$/;"	d
+CXX	Makefile	/^CXX      := g++$/;"	m
+CXXFLAGS	Makefile	/^CXXFLAGS := -Wall -Wextra -Wpedantic -std=c++17 -Iinclude -O3$/;"	m
+Compressor	src/compressor.cpp	/^Compressor::Compressor() {$/;"	f	class:Compressor
+CsvParser	include/parser.hpp	/^class CsvParser {$/;"	c
+CsvParser	src/parser.cpp	/^CsvParser::CsvParser(const std::string &filename) : _filename{filename} {}$/;"	f	class:CsvParser
+FORMAT	Makefile	/^FORMAT := clang-format --style=llvm -i$/;"	m
+HEADERS	Makefile	/^HEADERS := $(wildcard $(INC_DIR)\/*.hpp)$/;"	m
+INC_DIR	Makefile	/^INC_DIR   := include$/;"	m
+KNN_HPP	include/knn.hpp	/^#define KNN_HPP$/;"	d
+Knn	include/knn.hpp	/^class Knn {$/;"	c
+Knn	src/knn.cpp	/^Knn::Knn(const std::string &train, bool debug) : _train{train}, _debug{debug} {$/;"	f	class:Knn
+LDFLAGS	Makefile	/^LDFLAGS  := -lz$/;"	m
+OBJECTS	Makefile	/^OBJECTS := $(SOURCES:$(SRC_DIR)\/%.cpp=$(BUILD_DIR)\/%.o)$/;"	m
+OwnedData	include/parser.hpp	/^  struct OwnedData {$/;"	s	class:CsvParser
+PARSER_HPP	include/parser.hpp	/^#define PARSER_HPP$/;"	d
+SOURCES	Makefile	/^SOURCES := $(wildcard $(SRC_DIR)\/*.cpp)$/;"	m
+SRC_DIR	Makefile	/^SRC_DIR   := src$/;"	m
+TARGET	Makefile	/^TARGET := $(BIN_DIR)\/app$/;"	m
+_data	include/knn.hpp	/^  CsvParser::CsvData _data; \/\/\/< Parsed rows moved from @ref CsvParser.$/;"	m	class:Knn
+_data	include/parser.hpp	/^  CsvData _data;           \/\/\/< Parsed rows pointing into @c _fileBuffer.$/;"	m	class:CsvParser
+_debug	include/knn.hpp	/^  bool _debug;              \/\/\/< When true, emit verbose parse diagnostics.$/;"	m	class:Knn
+_fileBuffer	include/knn.hpp	/^      _fileBuffer; \/\/\/< Backing store for @c string_view cells in @c _data.$/;"	m	class:Knn
+_fileBuffer	include/parser.hpp	/^  std::string _fileBuffer; \/\/\/< Entire file contents; backing store for views.$/;"	m	class:CsvParser
+_filename	include/parser.hpp	/^  std::string _filename;   \/\/\/< Source path passed to the constructor.$/;"	m	class:CsvParser
+_train	include/knn.hpp	/^  std::string _train; \/\/\/< Copy of the training file path (for logging).$/;"	m	class:Knn
+analyzeDataTest	src/knn.cpp	/^void Knn::analyzeDataTest() {$/;"	f	class:Knn
+compressDecompressDataTest	src/knn.cpp	/^void Knn::compressDecompressDataTest() {$/;"	f	class:Knn
+compressString	src/compressor.cpp	/^std::vector<Bytef> Compressor::compressString(std::string_view text) {$/;"	f	class:Compressor
+compressedSize	src/compressor.cpp	/^std::size_t Compressor::compressedSize(std::string_view a, std::string_view b) {$/;"	f	class:Compressor
+compressedSize	src/compressor.cpp	/^std::size_t Compressor::compressedSize(std::string_view text) {$/;"	f	class:Compressor
+decompressString	src/compressor.cpp	/^std::string Compressor::decompressString(const std::vector<Bytef> &compressed) {$/;"	f	class:Compressor
+fileBuffer	include/parser.hpp	/^    std::string fileBuffer;$/;"	m	struct:CsvParser::OwnedData
+final	include/compressor.hpp	/^class Compressor final {$/;"	c
+getData	src/parser.cpp	/^const CsvParser::CsvData &CsvParser::getData() const { return _data; }$/;"	f	class:CsvParser
+initDeflateStream	src/compressor.cpp	/^void Compressor::initDeflateStream() {$/;"	f	class:Compressor
+initInflateStream	src/compressor.cpp	/^void Compressor::initInflateStream() {$/;"	f	class:Compressor
+isNumericLabel	src/knn.cpp	/^bool isNumericLabel(std::string_view label) {$/;"	f	namespace:__anon2
+joinRowText	src/knn.cpp	/^std::string joinRowText(const CsvParser::CsvRow &row) {$/;"	f	namespace:__anon2
+kInitialOutputCapacity	src/compressor.cpp	/^constexpr std::size_t kInitialOutputCapacity = 256;$/;"	m	namespace:__anon1	file:
+kMaxDecompressedBytes	src/compressor.cpp	/^constexpr std::size_t kMaxDecompressedBytes = 64 * 1024 * 1024;$/;"	m	namespace:__anon1	file:
+main	scratch/zlib-example.c	/^int main(int argc, char* argv[])$/;"	f
+main	src/main.cpp	/^int main(int argc, const char *argv[]) {$/;"	f
+parseClassLabel	src/knn.cpp	/^std::optional<int> parseClassLabel(std::string_view label) {$/;"	f	namespace:__anon2
+parseData	src/parser.cpp	/^bool CsvParser::parseData() {$/;"	f	class:CsvParser
+printData	src/parser.cpp	/^void CsvParser::printData() {$/;"	f	class:CsvParser
+printData	src/parser.cpp	/^void CsvParser::printData(int numRows) {$/;"	f	class:CsvParser
+rows	include/parser.hpp	/^    CsvData rows;$/;"	m	struct:CsvParser::OwnedData
+takeParsedData	src/parser.cpp	/^CsvParser::OwnedData CsvParser::takeParsedData() {$/;"	f	class:CsvParser
+zlibError	src/compressor.cpp	/^std::string zlibError(int code) {$/;"	f	namespace:__anon1
+~Compressor	src/compressor.cpp	/^Compressor::~Compressor() {$/;"	f	class:Compressor

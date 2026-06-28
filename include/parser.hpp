@@ -66,7 +66,6 @@ public:
    * @param filename Path to a CSV file on disk.
    */
   explicit CsvParser(const std::string &filename);
-  ~CsvParser() = default;
 
   /**
    * @brief Read @c _filename and populate @c _data.

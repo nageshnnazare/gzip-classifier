@@ -3,7 +3,7 @@
 
 # Compiler and Flags
 CXX      := g++
-CXXFLAGS := -Wall -Wextra -Wpedantic -std=c++17 -Iinclude -O3
+CXXFLAGS := -Wall -Wextra -Wpedantic -std=c++17 -Iinclude -O3 -ggdb
 LDFLAGS  := -lz
 
 # Directories
@@ -52,6 +52,6 @@ clean:
 # Run the executable
 run: all
 	@echo "Running $(TARGET)..."
-	$(TARGET)
+	time $(TARGET)
 
 .PHONY: all clean run

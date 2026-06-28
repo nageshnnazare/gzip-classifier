@@ -19,10 +19,35 @@
 #include <compressor.hpp>
 #include <knn.hpp>
 
-int main() {
-  Knn knn{"datasets/ag_news/train.csv", true};
-  knn.analyzeDataTest();
-  knn.compressDecompressDataTest();
+namespace {
+constexpr const char *agNewsClassNames[] = {"None", "World", "Sports",
+                                            "Business", "Sci/Tech"};
+const unsigned int k = 4;
+} // namespace
 
+int main() {
+  bool debug = true;
+  Knn knn{"datasets/ag_news/train.csv", "datasets/ag_news/test.csv", k, debug};
+
+  if (debug) {
+    knn.check();
+  }
+
+  std::string input;
+  std::cout << "Input Text: " << "\n> ";
+  while (std::getline(std::cin, input)) {
+    if (input == "quit" || input == "q" || input == "exit") {
+      break;
+    }
+    unsigned int predictedClass = knn.classify(input);
+    predictedClass =
+        predictedClass > sizeof(agNewsClassNames) / sizeof(agNewsClassNames[0])
+            ? 0
+            : predictedClass;
+
+    std::cout << "Predicted Class: (" << predictedClass << ") "
+              << agNewsClassNames[predictedClass] << "\n";
+    std::cout << "Input Text: " << "\n> ";
+  }
   return 0;
 }

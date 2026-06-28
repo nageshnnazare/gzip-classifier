@@ -25,6 +25,7 @@
 #include <string>
 
 #include <parser.hpp>
+#include <string_view>
 
 /**
  * @class Knn
@@ -35,8 +36,9 @@
  * integer class label; remaining columns hold text fields for distance work.
  */
 class Knn {
-
 public:
+  using NCD = std::pair<float, unsigned int>; ///< <distance, class>
+
   /**
    * @brief Load training data from a CSV file.
    *
@@ -46,9 +48,31 @@ public:
    * @param train  Filesystem path to a labeled CSV (column 0 = class id).
    * @param debug  When @c true, echo a sample of parsed rows to stdout.
    */
-  Knn(const std::string &train, bool debug);
-  ~Knn() = default;
+  Knn(const std::string &train, const std::string &test, const unsigned int k,
+      bool debug);
 
+  void check();
+
+  unsigned int classify(const std::string &input);
+
+private:
+  std::string _train; ///< Copy of the training file path (for logging).
+  std::string _test;  ///< Copy of the test file path (for logging).
+
+  std::string _trainBuffer; ///< Backing store for @c string_view cells in @c
+                            ///< _trainData.
+  std::string
+      _testBuffer; ///< Backing store for @c string_view cells in @c _testData.
+
+  CsvParser::CsvData _trainData; ///< Parsed rows moved from @ref CsvParser.
+  CsvParser::CsvData _testData;  ///< Parsed rows moved from @ref CsvParser.
+
+  Compressor _compressor{}; ///< Gzip compressor for NCD experiments.
+
+  const unsigned int _k;
+  bool _debug; ///< When true, emit verbose parse diagnostics.
+
+private:
   /**
    * @brief Print per-class row counts from the loaded training set.
    *
@@ -63,13 +87,7 @@ public:
 
   void compressDecompressDataTest();
 
-private:
-  std::string _train; ///< Copy of the training file path (for logging).
-  std::string
-      _fileBuffer; ///< Backing store for @c string_view cells in @c _data.
-  CsvParser::CsvData _data; ///< Parsed rows moved from @ref CsvParser.
-  Compressor _compressor{}; ///< Gzip compressor for NCD experiments.
-  bool _debug;              ///< When true, emit verbose parse diagnostics.
+  float calculateNCD(std::string_view textA, std::string_view textB);
 };
 
 #endif // KNN_HPP
